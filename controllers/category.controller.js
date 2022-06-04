@@ -3,7 +3,7 @@ this file contains controller logic for the category resource
 Everytime a CRUD request come for the category, methods define in this controller file will be executed
 */
 
-const db = require("models");
+const db = require("../models");
 const Category = db.category;
 
 /*
@@ -111,6 +111,30 @@ exports.update = (req, res) => {
 		.catch((err) => {
 			res.status(500).send({
 				message: "Some internal error while fetching the data",
+			});
+		});
+};
+
+/*
+ * Delete on existing category based on category id
+ */
+
+exports.delete = (req, res) => {
+	const categoryId = req.params.id;
+
+	Category.destroy({
+		where: {
+			id: categoryId,
+		},
+	})
+		.then((result) => {
+			res.status(200).send({
+				message: "Successfully deleted the category",
+			});
+		})
+		.catch((err) => {
+			res.status(500).send({
+				message: "Some internal error while deleting the data",
 			});
 		});
 };
